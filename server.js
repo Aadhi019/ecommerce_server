@@ -14,7 +14,7 @@ connectDB();
 // Security middleware
 app.use(helmet());
 app.use(cors({ 
-  origin: ['http://localhost:3000', 'https://ecommerce-client-simw.onrender.com', 'https://your-netlify-app.netlify.app'], 
+  origin: ['http://localhost:3000', 'https://ecommerce-client-simw.onrender.com', 'https://ecommerceaadhi.netlify.app'], 
   credentials: true 
 }));
 
