@@ -14,7 +14,7 @@ connectDB();
 // Security middleware
 app.use(helmet());
 app.use(cors({ 
-  origin: ['http://localhost:3000', 'https://ecommerce-client-simw.onrender.com'], 
+  origin: ['http://localhost:3000', 'https://ecommerce-client-simw.onrender.com', 'https://your-netlify-app.netlify.app'], 
   credentials: true 
 }));
 
@@ -40,6 +40,17 @@ app.use('/api/admin', require('./routes/adminRoutes'));
 
 // Error handler
 app.use(errorHandler);
+
+// Seed data in production if no users exist
+if (process.env.NODE_ENV === 'production') {
+  const User = require('./models/User');
+  User.countDocuments().then(count => {
+    if (count === 0) {
+      console.log('No users found, seeding data...');
+      require('./utils/seedData');
+    }
+  });
+}
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
