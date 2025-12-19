@@ -1,4 +1,4 @@
-require('dotenv').config({ path: '../.env' });
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
@@ -13,7 +13,10 @@ connectDB();
 
 // Security middleware
 app.use(helmet());
-app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
+app.use(cors({ 
+  origin: ['http://localhost:3000', 'https://ecommerce-client-simw.onrender.com'], 
+  credentials: true 
+}));
 
 // Rate limiting
 const limiter = rateLimit({
