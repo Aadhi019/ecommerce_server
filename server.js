@@ -44,16 +44,21 @@ app.use('/api/admin', require('./routes/adminRoutes'));
 // Error handler
 app.use(errorHandler);
 
-// Seed data in production if no users exist
-if (process.env.NODE_ENV === 'production') {
-  const User = require('./models/User');
+// Always check and seed data if database is empty
+const User = require('./models/User');
+setTimeout(() => {
   User.countDocuments().then(count => {
     if (count === 0) {
       console.log('No users found, seeding data...');
       require('./utils/seedData');
+    } else {
+      console.log(`Database has ${count} users - skipping seed`);
     }
+  }).catch(err => {
+    console.log('Error checking users, attempting to seed:', err.message);
+    require('./utils/seedData');
   });
-}
+}, 3000);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
